@@ -43,7 +43,7 @@ class Group(BaseModel):
 
     def save(self, *args, **kwargs):
         if self.slug is None:
-            self.slug=custom_slugify(self.base_title)
+            self.slug = custom_slugify(self.base_title)
         super(Group,self).save(*args, **kwargs)
 
     def __str__(self):
@@ -51,17 +51,25 @@ class Group(BaseModel):
 
 class Brand(BaseModel):
     location = models.CharField(max_length=255, null=True, blank=True)
+    def __str__(self):
+            return self.base_title
 
 class Image(models.Model):
     image = models.ImageField(null=True, blank=True)
     is_primary = models.BooleanField(default=False)
+    def __str__(self):
+            return self.image.url
 
 class Attribute(models.Model):
     attribute = models.CharField(max_length=255)
+    def __str__(self):
+            return self.attribute
 
 class Value(models.Model):
     value = models.CharField(max_length=255)
     product_attribute = models.ForeignKey(Attribute, on_delete=models.CASCADE)
+    def __str__(self):
+            return self.value
 
 class Product(BaseModel):
     price = models.FloatField(default=25)
@@ -75,7 +83,7 @@ class Product(BaseModel):
 
     def save(self, *args, **kwargs):
         if self.slug is None:
-            self.slug=custom_slugify(self.base_title)
+            self.slug = custom_slugify(self.base_title)
         super(Product,self).save(*args, **kwargs)
     
     def __str__(self):

@@ -1,9 +1,10 @@
 from django.shortcuts import render, get_object_or_404
 from rest_framework.views import APIView
-from products.serializers import Category, CategorySerializer
+from products.serializers import Category, CategorySerializer, ProductSerializer, Product
 from rest_framework.response import Response
 from rest_framework import authentication, permissions
 from rest_framework import status
+from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveAPIView, DestroyAPIView, UpdateAPIView, ListCreateAPIView, RetrieveUpdateAPIView, RetrieveDestroyAPIView, RetrieveUpdateDestroyAPIView
 
 # Create your views here.
 
@@ -42,3 +43,91 @@ class CategoryEditAPI(APIView):
         category=get_object_or_404(Category, id=id)
         category.delete()
         return Response({"status": "success", "data": "Item Deleted"})
+    
+
+class CategoryListBase(APIView):
+    def get(self, request):
+        # data = {
+        #     category.id: {
+        #         'title': category.base_title,
+        #         'slug': category.slug,
+        #     }
+        #     for category in Category.objects.all()
+        # }
+        #2ND VERSION
+        # data = dict((category.id, {'title': category.base_title, 'slug': category.slug})
+        # for category in Category.objects.all()
+
+        #3RD VERSION
+        # data = {}
+        # for category in Category.objects.all():
+        #     data[category.slug] = {
+        #         'title': category.base_title,
+        #         'slug': category.slug,
+        #         }
+        # # base_title did not work here!
+
+
+        # 4th VERSION
+        categories = Category.objects.values('id', 'base_title', 'slug')
+        data = {category['base_title']: {'title': category['base_title'], 'slug': category['slug']} for category in categories}
+
+            
+
+
+        return Response(data, status=status.HTTP_200_OK)
+    
+class ProductCreateAPI(CreateAPIView):
+    serializer_class=ProductSerializer
+
+class ProductListAPI(ListAPIView):
+    queryset=Product.objects.all()
+    serializer_class=ProductSerializer
+
+    def filter_queryset(self, queryset):
+        return super().filter_queryset(queryset)
+    #  return queryset.filter(owner=self.request.user)
+
+class ProductUpdateAPI(UpdateAPIView):
+    queryset=Product.objects.all()
+    serializer_class=ProductSerializer
+
+    def perform_update(self, serializer):
+        serializer.save(updated_by=self.request.user)
+        return super().perform_update(serializer)
+    
+class ProductRetrieveAPI(RetrieveAPIView):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+
+class ProductDestroyAPI(DestroyAPIView):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+
+class ProductListCreateAPI(ListCreateAPIView):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
+
+class ProductRetrieveUpdateAPI(RetrieveUpdateAPIView):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+
+    def perform_update(self, serializer):
+        serializer.save(updated_by=self.request.user)
+
+
+
+class ProductRetrieveDestroyAPI(RetrieveDestroyAPIView):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+
+class ProductRetrieveUpdateDestroyAPI(RetrieveUpdateDestroyAPIView):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+
+    def perform_update(self, serializer):
+        serializer.save(updated_by=self.request.user)
+
