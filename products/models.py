@@ -1,16 +1,10 @@
 import re
 from django.db import models
-from django.utils.text import slugify
+from slugify import slugify
+from uuslug import uuslug
 
 
-def custom_slugify(value):
-    # Convert to lowercase
-    value = value.lower()
-    # Remove any special characters except for spaces and hyphens
-    value = re.sub(r'[^\w\s-]', '', value)
-    # Replace spaces and consecutive hyphens with a single hyphen
-    value = re.sub(r'[-\s]+', '-', value).strip('-')
-    return value
+
 
 class BaseModel(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
@@ -24,9 +18,12 @@ class Category(BaseModel):
     image = models.ImageField(null=True, blank=True)
     slug = models.SlugField(max_length=255, null=True, blank=True)
 
+    def __unicode__(self):
+         return self.base_title
+
     def save(self, *args, **kwargs):
         if not self.slug and self.base_title:
-            self.slug = custom_slugify(self.base_title)
+            self.slug = uuslug(self.base_title, instance=self)
         super(Category, self).save(*args, **kwargs)
 
     class Meta:
@@ -41,9 +38,12 @@ class Group(BaseModel):
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='groups')
     slug = models.SlugField(max_length=255, null=True, blank=True)
 
+    def __unicode__(self):
+         return self.base_title
+
     def save(self, *args, **kwargs):
-        if self.slug is None:
-            self.slug = custom_slugify(self.base_title)
+        if not self.slug and self.base_title:
+            self.slug = uuslug(self.base_title, instance=self)
         super(Group,self).save(*args, **kwargs)
 
     def __str__(self):
@@ -81,9 +81,12 @@ class Product(BaseModel):
     is_liked = models.BooleanField(default=False)
     slug = models.SlugField(max_length=255, null=True, blank=True)
 
+    def __unicode__(self):
+         return self.base_title
+
     def save(self, *args, **kwargs):
-        if self.slug is None:
-            self.slug = custom_slugify(self.base_title)
+        if not self.slug and self.base_title:
+            self.slug = uuslug(self.base_title, instance=self)
         super(Product,self).save(*args, **kwargs)
     
     def __str__(self):
