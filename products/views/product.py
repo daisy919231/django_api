@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from rest_framework.views import APIView
-from products.serializers import Category, CategorySerializer, ProductSerializer, Product
+from products.serializers import Category, CategorySerializer, ProductSerializer, Product, CharacteristicsKey, CharacteristicsValue, ProductCharacteristics, CharacteristicsKeySerializer, CharacteristicsValueSerializer, ProductCharSerializer
 from rest_framework.response import Response
 from rest_framework import authentication, permissions
 from rest_framework import status
@@ -60,3 +60,14 @@ class ProductRetrieveUpdateDestroyAPI(RetrieveUpdateDestroyAPIView):
     def perform_update(self, serializer):
         serializer.save(updated_by=self.request.user)
 
+class CharacteristicsKeyList(ListAPIView):
+    queryset=CharacteristicsKey.objects.all()
+    serializer_class=CharacteristicsKeySerializer
+
+class CharacteristicsValueList(ListAPIView):
+    queryset=CharacteristicsValue.objects.all()
+    serializer_class=CharacteristicsValueSerializer
+
+class ProductCharacteristicsList(ListAPIView):
+    queryset=ProductCharacteristics.objects.all()
+    serializer_class=ProductCharSerializer

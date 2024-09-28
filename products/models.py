@@ -133,3 +133,28 @@ class Rating(models.Model):
     rating = models.PositiveIntegerField(choices=RatingChoices.choices, default=RatingChoices.zero.value)
     message = models.TextField(null=True, blank=True)
     file = models.FileField(upload_to='comments/', null=True, blank=True)
+
+
+class CharacteristicsKey(models.Model):
+    key_name=models.CharField(max_length=255, null=True, blank=True)
+
+    def __str__(self):
+          return self.key_name
+
+class CharacteristicsValue(models.Model):
+    value_name=models.CharField(max_length=255, null=True, blank=True)
+
+    def __str__(self):
+          return self.value_name
+
+
+class ProductCharacteristics(models.Model):
+    char_key=models.ForeignKey(CharacteristicsKey, on_delete=models.CASCADE, null=True, blank=True)
+    char_value=models.ForeignKey(CharacteristicsValue, on_delete=models.CASCADE, null=True, blank=True)
+    product=models.ForeignKey(Product, on_delete=models.CASCADE, null=True, blank=True, related_name='characteristics')
+
+    class Meta:
+         verbose_name_plural='ProductCharacteristics'
+
+    def __str__(self):
+          return f' {self.char_value.value_name} - {self.product.base_title} '

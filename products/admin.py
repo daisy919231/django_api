@@ -1,5 +1,5 @@
 from django.contrib import admin
-from products.models import Category, Product, Group, Rating, Brand, Image, Order
+from products.models import Category, Product, Group, Rating, Brand, Image, Order, CharacteristicsKey, CharacteristicsValue, ProductCharacteristics
 # Register your models here.
 # admin.site.register(Category)
 # admin.site.register(Group)
@@ -9,13 +9,16 @@ class CategoryModelAdmin(admin.ModelAdmin):
     pass
 
 admin.site.register(Group)
-admin.site.register(Product)
-# admin.site.register(Attribute)
-# admin.site.register(Value)
+
+admin.site.register(CharacteristicsKey)
+admin.site.register(CharacteristicsValue)
+admin.site.register(ProductCharacteristics)
 admin.site.register(Rating)
 admin.site.register(Brand)
 admin.site.register(Image)
 admin.site.register(Order)
 
-
-    
+@admin.register(Product)
+class ProductModelAdmin(admin.ModelAdmin):
+    list_display = ('base_title','slug')
+    autocomplete_fields = ('is_liked',)

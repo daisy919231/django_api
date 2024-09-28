@@ -13,7 +13,10 @@ urlpatterns = [
     path('product_simple_retrieve/<int:pk>/', product.ProductRetrieveAPI.as_view(), name='simple_retrive'),
     path('product_retrieve_update/<int:pk>/', product.ProductRetrieveUpdateAPI.as_view(), name='retrive_update'),
     path('product_retrieve_delete/<int:pk>/', product.ProductRetrieveDestroyAPI.as_view(), name='retrieve_delete'),
-    path('product_complex/<int:pk>/', product.ProductRetrieveUpdateDestroyAPI.as_view(), name='product_complex')
+    path('product_complex/<int:pk>/', product.ProductRetrieveUpdateDestroyAPI.as_view(), name='product_complex'),
+    path('key_list/', product.CharacteristicsKeyList.as_view(), name='key_list'),
+    path('value_list/', product.CharacteristicsValueList.as_view(), name='value_list' ),
+    path('char_list/', product.ProductCharacteristicsList.as_view(), name='char_list'),
     
 
 ]
