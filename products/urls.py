@@ -1,5 +1,6 @@
 from django.urls import path
 from products.views import category, groups, product
+from rest_framework.authtoken import views
 
 urlpatterns = [
     path('category_list/', category.CategoryListAPI.as_view(), name='category_list'),
@@ -17,7 +18,11 @@ urlpatterns = [
     path('key_list/', product.CharacteristicsKeyList.as_view(), name='key_list'),
     path('value_list/', product.CharacteristicsValueList.as_view(), name='value_list' ),
     path('char_list/', product.ProductCharacteristicsList.as_view(), name='char_list'),
-    
+    path('api-token-auth/', views.obtain_auth_token),
+    path('user_register/',product.RegisterAPI.as_view(), name='register'),
+    path("get-details/", product.UserDetailAPI.as_view()),
+    path('user_login/', product.UserLoginView.as_view(), name='login'),
+    path('user_logout/', product.UserLogoutAPIView.as_view(), name='logout'),
 
 ]
 
