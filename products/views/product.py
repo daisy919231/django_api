@@ -14,13 +14,19 @@ from rest_framework.authentication import TokenAuthentication
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 from rest_framework.permissions import IsAuthenticated
+from rest_framework_simplejwt.authentication import JWTAuthentication
 
 class ProductCreateAPI(CreateAPIView):
     serializer_class=ProductSerializer
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
 
 class ProductListAPI(ListAPIView):
     queryset=Product.objects.all()
     serializer_class=ProductSerializer
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
+
 
     def filter_queryset(self, queryset):
         return super().filter_queryset(queryset)
@@ -29,6 +35,8 @@ class ProductListAPI(ListAPIView):
 class ProductUpdateAPI(UpdateAPIView):
     queryset=Product.objects.all()
     serializer_class=ProductSerializer
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def perform_update(self, serializer):
         serializer.save(updated_by=self.request.user)
@@ -37,14 +45,20 @@ class ProductUpdateAPI(UpdateAPIView):
 class ProductRetrieveAPI(RetrieveAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
 
 class ProductDestroyAPI(DestroyAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
 
 class ProductListCreateAPI(ListCreateAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def perform_create(self, serializer):
         serializer.save()
@@ -52,6 +66,8 @@ class ProductListCreateAPI(ListCreateAPIView):
 class ProductRetrieveUpdateAPI(RetrieveUpdateAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def perform_update(self, serializer):
         serializer.save(updated_by=self.request.user)
@@ -61,10 +77,14 @@ class ProductRetrieveUpdateAPI(RetrieveUpdateAPIView):
 class ProductRetrieveDestroyAPI(RetrieveDestroyAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
 
 class ProductRetrieveUpdateDestroyAPI(RetrieveUpdateDestroyAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def perform_update(self, serializer):
         serializer.save(updated_by=self.request.user)
@@ -72,14 +92,20 @@ class ProductRetrieveUpdateDestroyAPI(RetrieveUpdateDestroyAPIView):
 class CharacteristicsKeyList(ListAPIView):
     queryset=CharacteristicsKey.objects.all()
     serializer_class=CharacteristicsKeySerializer
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
 
 class CharacteristicsValueList(ListAPIView):
     queryset=CharacteristicsValue.objects.all()
     serializer_class=CharacteristicsValueSerializer
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
 
 class ProductCharacteristicsList(ListAPIView):
     queryset=ProductCharacteristics.objects.all()
     serializer_class=ProductCharSerializer
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
 
 class UserDetailAPI(APIView):
   authentication_classes = (TokenAuthentication,)

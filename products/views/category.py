@@ -5,10 +5,15 @@ from rest_framework.response import Response
 from rest_framework import authentication, permissions
 from rest_framework import status
 from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveAPIView, DestroyAPIView, UpdateAPIView, ListCreateAPIView, RetrieveUpdateAPIView, RetrieveDestroyAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework.permissions import IsAuthenticated
+from rest_framework_simplejwt.authentication import JWTAuthentication
+
 
 # Create your views here.
 
 class CategoryListAPI(APIView):
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
     def get(self, request):
         category=Category.objects.all()
         serializer=CategorySerializer(category, many=True)
@@ -24,6 +29,8 @@ class CategoryListAPI(APIView):
         
 
 class CategoryEditAPI(APIView):
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
     def get(self, request, id=None, **kwargs):
         category=get_object_or_404(Category, id=id)
         serializer=CategorySerializer(category)
@@ -46,6 +53,8 @@ class CategoryEditAPI(APIView):
     
 
 class CategoryListBase(APIView):
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
     def get(self, request):
         # data = {
         #     category.id: {
