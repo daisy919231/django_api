@@ -11,12 +11,17 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import authentication, permissions
 from rest_framework import status
+from rest_framework.permissions import IsAuthenticated
+from rest_framework_simplejwt.authentication import JWTAuthentication
 
 
 
 class BookListCreateAPIView(generics.ListCreateAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
+
 
 # class BookDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
 #     queryset = Book.objects.all()
@@ -41,12 +46,18 @@ class BookListCreateAPIView(generics.ListCreateAPIView):
 #         return Response(usernames)
 
 class BookListAPIView(APIView):
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
+
     def get (self, request):
         books=Book.objects.all()
         serializer=BookSerializer(books, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 class BookCreateAPIView(APIView):
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
+
     def get (self, request):
         books=Book.objects.all()
         serializer=BookSerializer(books, many=True)
