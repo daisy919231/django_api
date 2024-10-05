@@ -1,0 +1,16 @@
+runtime: python39  # or your specific Python version
+instance_class: F2  # Adjust based on your needs
+
+env: flexible  # or 'flex' if using the flexible environment
+
+handlers:
+  - url: /static
+    static_dir: static/
+    
+  - url: /.*
+    script: auto
+
+# Optional settings
+env_variables:
+  DJANGO_SETTINGS_MODULE: "root.settings"
+  SECRET_KEY: env("SECRET_KEY")  # Make sure to keep this secret!
