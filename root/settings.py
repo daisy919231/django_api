@@ -1,5 +1,7 @@
 import os
-import environ
+
+
+
 from datetime import timedelta
 """
 Django settings for root project.
@@ -20,15 +22,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 
-env = environ.Env()
-environ.Env.read_env()
+# environ = environ.()
+# environ..read_()
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env("SECRET_KEY")
+SECRET_KEY = "django-insecure-p_gu2we9l9jg2k5r_basncs4@+i$_)dy-gryqrn3!uin-yfj)2"
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -91,11 +93,11 @@ WSGI_APPLICATION = 'root.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': env("DB_NAME"), 
-        'USER': env("DB_USER"),
-        'PASSWORD': env("DB_PASSWORD"),
-        'HOST': env("DB_HOST"), 
-        'PORT': env("DB_PORT"),
+        'NAME': "cherrydb", 
+        'USER': "postgres",
+        'PASSWORD': 1111,
+        'HOST': "127.0.0.1", 
+        'PORT': 5432,
     }
 }
 
@@ -165,3 +167,13 @@ MEDIA_ROOT=os.path.join(BASE_DIR, 'media/')
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+def get_python_version(runtime):
+    if runtime == "python310":
+        return "python3.10"
+    elif runtime == "python311":
+        return "python3.11"
+    elif runtime == "python312":
+        return "python3.12"
+    return "python"
+
