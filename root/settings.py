@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'products',
     'rest_framework.authtoken',
     'rest_framework_simplejwt',
+    'post',
 ]
 
 MIDDLEWARE = [
