@@ -96,9 +96,12 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': "cherrydb", 
         'USER': "postgres",
-        'PASSWORD': 1111,
+        'PASSWORD': '1111',
         'HOST': "127.0.0.1", 
         'PORT': 5432,
+        'OPTIONS': {
+            'client_encoding': 'UTF8',
+        },
     }
 }
 
