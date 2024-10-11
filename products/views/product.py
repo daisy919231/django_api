@@ -21,11 +21,12 @@ class ProductCreateAPI(CreateAPIView):
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
 
+
 class ProductListAPI(ListAPIView):
     queryset=Product.objects.all()
     serializer_class=ProductSerializer
-    authentication_classes = [JWTAuthentication]
-    permission_classes = [IsAuthenticated]
+    # authentication_classes = [JWTAuthentication]
+    # permission_classes = [IsAuthenticated]
 
 
     def filter_queryset(self, queryset):

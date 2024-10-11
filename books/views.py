@@ -14,14 +14,49 @@ from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.authentication import JWTAuthentication
 
+# FOR SWAGGER
+
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from drf_yasg.utils import swagger_auto_schema
+from drf_yasg import openapi
 
 
+# caching
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
+from django.views.decorators.vary import vary_on_cookie, vary_on_headers
+from django.core.cache import cache
+
+
+# @method_decorator(cache_page(60 * 60 * 2), name='dispatch')
+# @method_decorator(vary_on_headers("Authorization"))
 class BookListCreateAPIView(generics.ListCreateAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-    authentication_classes = [JWTAuthentication]
-    permission_classes = [IsAuthenticated]
+    # authentication_classes = [JWTAuthentication]
+    # permission_classes = [IsAuthenticated]
+    def get_queryset(self):
+        cache_key='book_list'
+        cached_data=cache.get(cache_key)
+        if not cached_data:
+            queryset=Book.objects.all().select_related('author')
+            cache.set(cache_key, queryset, timeout=60*3)
+            return queryset
+        return cached_data
 
+
+
+
+class MyAPIView(APIView):
+    @swagger_auto_schema(
+        operation_description="Get a list of items",
+        responses={200: openapi.Response('Success', BookSerializer(many=True))}
+    )
+    def get(self, request):
+        items = Book.objects.all()
+        serializer = BookSerializer(items, many=True)
+        return Response(serializer.data)
 
 # class BookDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
 #     queryset = Book.objects.all()

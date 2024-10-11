@@ -53,7 +53,12 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'rest_framework_simplejwt',
     'post',
+    'drf_yasg',
+    'debug_toolbar',
+
 ]
+
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -63,6 +68,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 ROOT_URLCONF = 'root.urls'
@@ -96,7 +102,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': "cherrydb", 
         'USER': "postgres",
-        'PASSWORD': '1111',
+        'PASSWORD': '3638',
         'HOST': "127.0.0.1", 
         'PORT': 5432,
         'OPTIONS': {
@@ -181,3 +187,6 @@ def get_python_version(runtime):
         return "python3.12"
     return "python"
 
+INTERNAL_IPS = [
+    '127.0.0.1',
+]
